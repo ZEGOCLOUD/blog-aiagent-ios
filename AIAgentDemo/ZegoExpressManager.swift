@@ -1,27 +1,13 @@
 import Foundation
 import ZegoExpressEngine
 
-/// Subtitle message data model
-struct SubtitleMessage {
-    let cmd: Int           // 3=ASR(user), 4=LLM(AI)
-    let text: String
-    let messageId: String
-    let endFlag: Bool
-    let seqId: Int64
-    let round: Int64
-    let timestamp: Int64
-
-    var isUserMessage: Bool { cmd == 3 }
-    var isAgentMessage: Bool { cmd == 4 }
-}
-
 /// Manager class for ZEGO Express SDK operations
 class ZegoExpressManager: NSObject {
     static let shared = ZegoExpressManager()
 
     // Callbacks
     var onRoomStateChanged: ((String, ZegoRoomStateChangedReason, Int32) -> Void)?
-    var onSubtitleReceived: ((SubtitleMessage) -> Void)?
+    var onRecvExperimentalAPI: ((String) -> Void)?
 
     private override init() {
         super.init()
@@ -102,32 +88,6 @@ class ZegoExpressManager: NSObject {
     func destroyEngine() {
         ZegoExpressEngine.destroy(nil)
     }
-
-    /// Parse subtitle message from experimental API callback
-    private func parseSubtitleMessage(_ content: String) -> SubtitleMessage? {
-        guard let data = content.data(using: .utf8),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let method = json["method"] as? String,
-              method == "liveroom.room.on_recive_room_channel_message",
-              let params = json["params"] as? [String: Any],
-              let msgContent = params["msg_content"] as? String,
-              let msgData = msgContent.data(using: .utf8),
-              let msgJson = try? JSONSerialization.jsonObject(with: msgData) as? [String: Any],
-              let cmd = msgJson["Cmd"] as? Int,
-              let dataDict = msgJson["Data"] as? [String: Any] else {
-            return nil
-        }
-
-        return SubtitleMessage(
-            cmd: cmd,
-            text: dataDict["Text"] as? String ?? "",
-            messageId: dataDict["MessageId"] as? String ?? "",
-            endFlag: dataDict["EndFlag"] as? Bool ?? false,
-            seqId: msgJson["SeqId"] as? Int64 ?? 0,
-            round: msgJson["Round"] as? Int64 ?? 0,
-            timestamp: msgJson["Timestamp"] as? Int64 ?? 0
-        )
-    }
 }
 
 // MARK: - ZegoEventHandler
@@ -145,10 +105,7 @@ extension ZegoExpressManager: ZegoEventHandler {
 
     func onRecvExperimentalAPI(_ content: String) {
         print("[ZegoExpressManager] onRecvExperimentalAPI: \(content)")
-        if let message = parseSubtitleMessage(content) {
-            print("[ZegoExpressManager] Parsed subtitle: cmd=\(message.cmd), text=\(message.text)")
-            onSubtitleReceived?(message)
-        }
+        onRecvExperimentalAPI?(content)
     }
 }
 

@@ -1,0 +1,170 @@
+//
+//  ZegoAgentMessageContent.m
+//  ai_agent_uikit
+//
+//  Created by ZEGO on 2024-06-01.
+//  Copyright © 2024 ZEGO. All rights reserved.
+//
+
+#import "ZegoAIAgentSubtitlesMessageProtocol.h"
+
+#pragma mark - ZegoAgentSpeakStatusData
+
+@implementation ZegoAIAgentSubtitlesSpeakStatusData
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _speakStatus = 0;
+    }
+    return self;
+}
+
+- (instancetype)initWithDictionary:(NSDictionary *)dict {
+    self = [self init];
+    if (self) {
+        if (dict[@"SpeakStatus"]) {
+            _speakStatus = (ZegoAIAgentSubtitlesSpeakStatus)[dict[@"SpeakStatus"] intValue];
+        }
+    }
+    return self;
+}
+
+- (NSDictionary *)toDictionary {
+    return @{@"SpeakStatus": @(self.speakStatus)};
+}
+
+@end
+
+#pragma mark - ZegoAgentASRTextData
+
+@implementation ZegoAIAgentSubtitlesASRTextData
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _text = @"";
+        _messageId = @"";
+        _endFlag = NO;
+    }
+    return self;
+}
+
+- (instancetype)initWithDictionary:(NSDictionary *)dict {
+    self = [self init];
+    if (self) {
+        if (dict[@"Text"]) { _text = dict[@"Text"]; }
+        if (dict[@"MessageId"]) { _messageId = dict[@"MessageId"]; }
+        if (dict[@"EndFlag"]) { _endFlag = [dict[@"EndFlag"] boolValue]; }
+    }
+    return self;
+}
+
+- (NSDictionary *)toDictionary {
+    return @{@"Text": self.text, @"MessageId": self.messageId, @"EndFlag": @(self.endFlag)};
+}
+
+@end
+
+#pragma mark - ZegoAgentLLMTextData
+
+@implementation ZegoAIAgentSubtitlesLLMTextData
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _text = @"";
+        _messageId = @"";
+        _endFlag = NO;
+    }
+    return self;
+}
+
+- (instancetype)initWithDictionary:(NSDictionary *)dict {
+    self = [self init];
+    if (self) {
+        if (dict[@"Text"]) { _text = dict[@"Text"]; }
+        if (dict[@"MessageId"]) { _messageId = dict[@"MessageId"]; }
+        if (dict[@"EndFlag"]) { _endFlag = [dict[@"EndFlag"] boolValue]; }
+    }
+    return self;
+}
+
+- (NSDictionary *)toDictionary {
+    return @{@"Text": self.text, @"MessageId": self.messageId, @"EndFlag": @(self.endFlag)};
+}
+
+@end
+
+#pragma mark - ZegoAgentMessageContent
+
+@implementation ZegoAIAgentSubtitlesMessageProtocol {
+    ZegoAIAgentSubtitlesSpeakStatusData *_userSpeakData;
+    ZegoAIAgentSubtitlesSpeakStatusData *_agentSpeakData;
+    ZegoAIAgentSubtitlesASRTextData *_asrTextData;
+    ZegoAIAgentSubtitlesLLMTextData *_llmTextData;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _timestamp = 0;
+        _seqId = 0;
+        _round = 0;
+        _cmdType = 0;
+        _data = @{};
+    }
+    return self;
+}
+
+- (instancetype)initWithDictionary:(NSDictionary *)jsonDict {
+    self = [self init];
+    if (self) {
+        if (jsonDict[@"Timestamp"]) { _timestamp = [jsonDict[@"Timestamp"] longLongValue]; }
+        if (jsonDict[@"SeqId"]) { _seqId = [jsonDict[@"SeqId"] longLongValue]; }
+        if (jsonDict[@"Round"]) { _round = [jsonDict[@"Round"] longLongValue]; }
+        if (jsonDict[@"Cmd"]) { _cmdType = (ZegoAIAgentSubtitlesMessageCommand)[jsonDict[@"Cmd"] intValue]; }
+        if (jsonDict[@"Data"] && [jsonDict[@"Data"] isKindOfClass:[NSDictionary class]]) {
+            _data = jsonDict[@"Data"];
+            [self parseDataForCmd];
+        }
+    }
+    return self;
+}
+
+- (void)parseDataForCmd {
+    switch (_cmdType) {
+        case ZegoAgentMessageCmdUserSpeakStatus:
+            _userSpeakData = [[ZegoAIAgentSubtitlesSpeakStatusData alloc] initWithDictionary:_data];
+            break;
+        case ZegoAgentMessageCmdAgentSpeakStatus:
+            _agentSpeakData = [[ZegoAIAgentSubtitlesSpeakStatusData alloc] initWithDictionary:_data];
+            break;
+        case ZegoAgentMessageCmdASRText:
+            _asrTextData = [[ZegoAIAgentSubtitlesASRTextData alloc] initWithDictionary:_data];
+            break;
+        case ZegoAgentMessageCmdLLMText:
+            _llmTextData = [[ZegoAIAgentSubtitlesLLMTextData alloc] initWithDictionary:_data];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)setData:(NSDictionary *)data {
+    _data = data;
+    [self parseDataForCmd];
+}
+
+- (NSDictionary *)toDictionary {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    dict[@"Timestamp"] = @(self.timestamp);
+    dict[@"SeqId"] = @(self.seqId);
+    dict[@"Round"] = @(self.round);
+    dict[@"Cmd"] = @(self.cmdType);
+    dict[@"Data"] = self.data ?: @{};
+    return [dict copy];
+}
+
+@end
+

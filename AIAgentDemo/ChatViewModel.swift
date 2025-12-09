@@ -1,23 +1,16 @@
 import Foundation
 import AVFoundation
 
-/// Display message model for UI
-struct ChatMessage: Identifiable {
-    let id: String
-    var text: String
-    let isUser: Bool
-    var isComplete: Bool
-    let seqId: Int64
-}
-
 /// ViewModel for managing chat state and RTC operations
 @MainActor
-class ChatViewModel: ObservableObject {
-    @Published var messages: [ChatMessage] = []
+class ChatViewModel: NSObject, ObservableObject, ZegoAIAgentSubtitlesEventHandler {
     @Published var isConnected = false
     @Published var isLoading = false
     @Published var statusText = "Disconnected"
     @Published var errorMessage: String?
+
+    /// 官方字幕 TableView 组件
+    let subtitlesTableView: ZegoAIAgentSubtitlesTableView
 
     private var currentRoomId: String?
     private var currentUserId: String?
@@ -25,15 +18,18 @@ class ChatViewModel: ObservableObject {
     private var agentInstanceId: String?
     private var agentStreamId: String?
 
-    // Cache for LLM messages (incremental text)
-    private var llmMessageCache: [String: String] = [:]
-
-    init() {
+    override init() {
+        // 初始化官方字幕 TableView
+        subtitlesTableView = ZegoAIAgentSubtitlesTableView(frame: .zero, style: .plain)
+        super.init()
         setupZegoManager()
     }
 
     private func setupZegoManager() {
         ZegoExpressManager.shared.initEngine()
+
+        // 注册字幕事件处理器
+        ZegoAIAgentSubtitlesMessageDispatcher.sharedInstance().register(self)
 
         // Listen for room state changes
         ZegoExpressManager.shared.onRoomStateChanged = { [weak self] roomId, reason, errorCode in
@@ -51,66 +47,34 @@ class ChatViewModel: ObservableObject {
             }
         }
 
-        // Listen for subtitle messages
-        ZegoExpressManager.shared.onSubtitleReceived = { [weak self] message in
-            Task { @MainActor in
-                self?.handleSubtitleMessage(message)
-            }
+        // 使用官方字幕消息分发器处理消息
+        ZegoExpressManager.shared.onRecvExperimentalAPI = { content in
+            ZegoAIAgentSubtitlesMessageDispatcher.sharedInstance().handleExpressExperimentalAPIContent(content)
         }
     }
 
-    private func handleSubtitleMessage(_ message: SubtitleMessage) {
-        if message.isUserMessage {
-            handleAsrMessage(message)
-        } else if message.isAgentMessage {
-            handleLlmMessage(message)
+    // MARK: - ZegoAIAgentSubtitlesEventHandler
+
+    nonisolated func onRecvChatStateChange(_ state: ZegoAIAgentSessionState) {
+        // 处理聊天状态变化
+    }
+
+    nonisolated func onRecvAsrChatMsg(_ message: ZegoAIAgentAudioSubtitlesMessage) {
+        // 在主线程更新 UI
+        DispatchQueue.main.async { [weak self] in
+            self?.subtitlesTableView.handleRecvAsrMessage(message)
         }
     }
 
-    /// Handle ASR message (user speech) - full text replacement
-    private func handleAsrMessage(_ message: SubtitleMessage) {
-        guard !message.text.isEmpty else { return }
-
-        if let index = messages.firstIndex(where: { $0.id == message.messageId }) {
-            messages[index].text = message.text
-            messages[index].isComplete = message.endFlag
-        } else {
-            let chatMessage = ChatMessage(
-                id: message.messageId,
-                text: message.text,
-                isUser: true,
-                isComplete: message.endFlag,
-                seqId: message.seqId
-            )
-            messages.append(chatMessage)
+    nonisolated func onRecvLLMChatMsg(_ message: ZegoAIAgentAudioSubtitlesMessage) {
+        // 在主线程更新 UI
+        DispatchQueue.main.async { [weak self] in
+            self?.subtitlesTableView.handleRecvLLMMessage(message)
         }
     }
 
-    /// Handle LLM message (AI response) - incremental text accumulation
-    private func handleLlmMessage(_ message: SubtitleMessage) {
-        // Accumulate text in cache
-        let cachedText = llmMessageCache[message.messageId] ?? ""
-        let newText = cachedText + message.text
-        llmMessageCache[message.messageId] = newText
-
-        if let index = messages.firstIndex(where: { $0.id == message.messageId }) {
-            messages[index].text = newText
-            messages[index].isComplete = message.endFlag
-        } else {
-            let chatMessage = ChatMessage(
-                id: message.messageId,
-                text: newText,
-                isUser: false,
-                isComplete: message.endFlag,
-                seqId: message.seqId
-            )
-            messages.append(chatMessage)
-        }
-
-        // Clean up cache when complete
-        if message.endFlag {
-            llmMessageCache.removeValue(forKey: message.messageId)
-        }
+    nonisolated func onExpressExperimentalAPIContent(_ content: String) {
+        // 原始内容回调，可用于调试
     }
 
     func startCall() async {
@@ -231,6 +195,8 @@ class ChatViewModel: ObservableObject {
     }
 
     deinit {
+        // 注销字幕事件处理器
+        ZegoAIAgentSubtitlesMessageDispatcher.sharedInstance().unregisterEventHandler(self)
         Task { @MainActor in
             if isConnected {
                 await endCall()

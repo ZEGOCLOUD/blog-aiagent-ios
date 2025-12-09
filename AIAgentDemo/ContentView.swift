@@ -7,7 +7,7 @@ struct ContentView: View {
         VStack(spacing: 0) {
             // Top: Control Panel
             VStack(spacing: 20) {
-                Text("ZEGO AI Agent")
+                Text("ZEGOCLOUD AI Agent")
                     .font(.title)
                     .fontWeight(.semibold)
 
@@ -52,7 +52,7 @@ struct ContentView: View {
 
             Divider()
 
-            // Bottom: Chat Messages
+            // Bottom: Chat Messages - 使用官方字幕组件
             VStack(spacing: 0) {
                 HStack {
                     Text("Conversation")
@@ -62,32 +62,8 @@ struct ContentView: View {
                 .padding(.horizontal)
                 .padding(.vertical, 12)
 
-                if viewModel.messages.isEmpty {
-                    Spacer()
-                    Text("Start a conversation with AI")
-                        .foregroundColor(.secondary)
-                    Spacer()
-                } else {
-                    ScrollViewReader { proxy in
-                        ScrollView {
-                            LazyVStack(alignment: .leading, spacing: 12) {
-                                ForEach(viewModel.messages) { message in
-                                    MessageBubble(message: message)
-                                        .id(message.id)
-                                }
-                            }
-                            .padding(.horizontal)
-                            .padding(.bottom, 16)
-                        }
-                        .onChange(of: viewModel.messages.count) { _ in
-                            if let lastMessage = viewModel.messages.last {
-                                withAnimation {
-                                    proxy.scrollTo(lastMessage.id, anchor: .bottom)
-                                }
-                            }
-                        }
-                    }
-                }
+                // 使用官方 ZegoAIAgentSubtitlesTableView
+                SubtitlesTableViewWrapper(tableView: viewModel.subtitlesTableView)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
@@ -119,22 +95,16 @@ struct ContentView: View {
     }
 }
 
-struct MessageBubble: View {
-    let message: ChatMessage
+/// UIViewRepresentable 包装器，用于在 SwiftUI 中使用官方 ZegoAIAgentSubtitlesTableView
+struct SubtitlesTableViewWrapper: UIViewRepresentable {
+    let tableView: ZegoAIAgentSubtitlesTableView
 
-    var body: some View {
-        VStack(alignment: message.isUser ? .trailing : .leading, spacing: 4) {
-            Text(message.isUser ? "You" : "AI Agent")
-                .font(.caption)
-                .foregroundColor(.secondary)
+    func makeUIView(context: Context) -> ZegoAIAgentSubtitlesTableView {
+        return tableView
+    }
 
-            Text(message.text)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(message.isUser ? Color.blue.opacity(0.2) : Color.green.opacity(0.2))
-                .cornerRadius(12)
-        }
-        .frame(maxWidth: .infinity, alignment: message.isUser ? .trailing : .leading)
+    func updateUIView(_ uiView: ZegoAIAgentSubtitlesTableView, context: Context) {
+        // TableView 会自动更新
     }
 }
 

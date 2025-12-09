@@ -26,6 +26,14 @@
 		F797D367D2206D0F50E3CDCA /* AIAgentDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF62CF4175F02839FCB6BD9 /* AIAgentDemoApp.swift */; };
 		F7C124D5C8E35C6CC50D07D3 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B87733BBF25FD1D498E8F325 /* VideoToolbox.framework */; };
 		F967CC1A9E4A69F699DA905E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4EA9C8340EF25EB559E3A /* CoreTelephony.framework */; };
+		OBJC001 /* ZegoAIAgentSubtitlesDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF001 /* ZegoAIAgentSubtitlesDefines.m */; };
+		OBJC002 /* ZegoAIAgentSubtitlesColors.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF002 /* ZegoAIAgentSubtitlesColors.m */; };
+		OBJC003 /* ZegoAIAgentSubtitlesMessageProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF003 /* ZegoAIAgentSubtitlesMessageProtocol.m */; };
+		OBJC004 /* ZegoAIAgentSubtitlesMessageDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF004 /* ZegoAIAgentSubtitlesMessageDispatcher.m */; };
+		OBJC005 /* ZegoAIAgentSubtitlesMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF005 /* ZegoAIAgentSubtitlesMessageModel.m */; };
+		OBJC006 /* ZegoAIAgentSubtitlesCellLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF006 /* ZegoAIAgentSubtitlesCellLabelView.m */; };
+		OBJC007 /* ZegoAIAgentSubtitlesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF007 /* ZegoAIAgentSubtitlesTableViewCell.m */; };
+		OBJC008 /* ZegoAIAgentSubtitlesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJCREF008 /* ZegoAIAgentSubtitlesTableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,6 +71,24 @@
 		EAA90760D29C27561495323D /* AIAgentDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIAgentDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02FE77B22CE2B37EBB534DC /* AppConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		F4027ACD79F38672C14D94C5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BRIDGINGHEADER /* AIAgentDemo-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AIAgentDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		OBJCREF001 /* ZegoAIAgentSubtitlesDefines.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesDefines.m; sourceTree = "<group>"; };
+		OBJCREFH01 /* ZegoAIAgentSubtitlesDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesDefines.h; sourceTree = "<group>"; };
+		OBJCREF002 /* ZegoAIAgentSubtitlesColors.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesColors.m; sourceTree = "<group>"; };
+		OBJCREFH02 /* ZegoAIAgentSubtitlesColors.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesColors.h; sourceTree = "<group>"; };
+		OBJCREF003 /* ZegoAIAgentSubtitlesMessageProtocol.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesMessageProtocol.m; sourceTree = "<group>"; };
+		OBJCREFH03 /* ZegoAIAgentSubtitlesMessageProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesMessageProtocol.h; sourceTree = "<group>"; };
+		OBJCREF004 /* ZegoAIAgentSubtitlesMessageDispatcher.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesMessageDispatcher.m; sourceTree = "<group>"; };
+		OBJCREFH04 /* ZegoAIAgentSubtitlesMessageDispatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesMessageDispatcher.h; sourceTree = "<group>"; };
+		OBJCREFH05 /* ZegoAIAgentSubtitlesEventHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesEventHandler.h; sourceTree = "<group>"; };
+		OBJCREF005 /* ZegoAIAgentSubtitlesMessageModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesMessageModel.m; sourceTree = "<group>"; };
+		OBJCREFH06 /* ZegoAIAgentSubtitlesMessageModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesMessageModel.h; sourceTree = "<group>"; };
+		OBJCREF006 /* ZegoAIAgentSubtitlesCellLabelView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesCellLabelView.m; sourceTree = "<group>"; };
+		OBJCREFH07 /* ZegoAIAgentSubtitlesCellLabelView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesCellLabelView.h; sourceTree = "<group>"; };
+		OBJCREF007 /* ZegoAIAgentSubtitlesTableViewCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesTableViewCell.m; sourceTree = "<group>"; };
+		OBJCREFH08 /* ZegoAIAgentSubtitlesTableViewCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesTableViewCell.h; sourceTree = "<group>"; };
+		OBJCREF008 /* ZegoAIAgentSubtitlesTableView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZegoAIAgentSubtitlesTableView.m; sourceTree = "<group>"; };
+		OBJCREFH09 /* ZegoAIAgentSubtitlesTableView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZegoAIAgentSubtitlesTableView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,8 +140,58 @@
 				313E2A3481AFA9E03A88F4E0 /* ContentView.swift */,
 				F02FE77B22CE2B37EBB534DC /* AppConfig.swift */,
 				F4027ACD79F38672C14D94C5 /* Info.plist */,
+				BRIDGINGHEADER /* AIAgentDemo-Bridging-Header.h */,
+				44DD55EE66FF112233445566 /* Subtitles */,
 			);
 			path = AIAgentDemo;
+			sourceTree = "<group>";
+		};
+		44DD55EE66FF112233445566 /* Subtitles */ = {
+			isa = PBXGroup;
+			children = (
+				SUBTITLES_CORE /* core */,
+				SUBTITLES_PROTOCOL /* protocol */,
+				SUBTITLES_VIEWS /* views */,
+				OBJCREFH09 /* ZegoAIAgentSubtitlesTableView.h */,
+				OBJCREF008 /* ZegoAIAgentSubtitlesTableView.m */,
+			);
+			path = Subtitles;
+			sourceTree = "<group>";
+		};
+		SUBTITLES_CORE /* core */ = {
+			isa = PBXGroup;
+			children = (
+				OBJCREFH01 /* ZegoAIAgentSubtitlesDefines.h */,
+				OBJCREF001 /* ZegoAIAgentSubtitlesDefines.m */,
+				OBJCREFH02 /* ZegoAIAgentSubtitlesColors.h */,
+				OBJCREF002 /* ZegoAIAgentSubtitlesColors.m */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		SUBTITLES_PROTOCOL /* protocol */ = {
+			isa = PBXGroup;
+			children = (
+				OBJCREFH05 /* ZegoAIAgentSubtitlesEventHandler.h */,
+				OBJCREFH03 /* ZegoAIAgentSubtitlesMessageProtocol.h */,
+				OBJCREF003 /* ZegoAIAgentSubtitlesMessageProtocol.m */,
+				OBJCREFH04 /* ZegoAIAgentSubtitlesMessageDispatcher.h */,
+				OBJCREF004 /* ZegoAIAgentSubtitlesMessageDispatcher.m */,
+			);
+			path = protocol;
+			sourceTree = "<group>";
+		};
+		SUBTITLES_VIEWS /* views */ = {
+			isa = PBXGroup;
+			children = (
+				OBJCREFH06 /* ZegoAIAgentSubtitlesMessageModel.h */,
+				OBJCREF005 /* ZegoAIAgentSubtitlesMessageModel.m */,
+				OBJCREFH07 /* ZegoAIAgentSubtitlesCellLabelView.h */,
+				OBJCREF006 /* ZegoAIAgentSubtitlesCellLabelView.m */,
+				OBJCREFH08 /* ZegoAIAgentSubtitlesTableViewCell.h */,
+				OBJCREF007 /* ZegoAIAgentSubtitlesTableViewCell.m */,
+			);
+			path = views;
 			sourceTree = "<group>";
 		};
 		8534440BF16C9A46FBEED3CA = {
@@ -223,6 +299,14 @@
 				EECF32386580059D17E4E0E6 /* ZegoExpressManager.swift in Sources */,
 				82C0A123EDDB7DABC874170C /* ContentView.swift in Sources */,
 				A06C7D0BDA77E55C34DF404E /* AppConfig.swift in Sources */,
+				OBJC001 /* ZegoAIAgentSubtitlesDefines.m in Sources */,
+				OBJC002 /* ZegoAIAgentSubtitlesColors.m in Sources */,
+				OBJC003 /* ZegoAIAgentSubtitlesMessageProtocol.m in Sources */,
+				OBJC004 /* ZegoAIAgentSubtitlesMessageDispatcher.m in Sources */,
+				OBJC005 /* ZegoAIAgentSubtitlesMessageModel.m in Sources */,
+				OBJC006 /* ZegoAIAgentSubtitlesCellLabelView.m in Sources */,
+				OBJC007 /* ZegoAIAgentSubtitlesTableViewCell.m in Sources */,
+				OBJC008 /* ZegoAIAgentSubtitlesTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,9 +318,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B82BHJ5H89;
+				DEVELOPMENT_TEAM = PN83KX5U85;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -252,6 +336,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zegocloud.aiagentdemo;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "AIAgentDemo/AIAgentDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -263,9 +348,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B82BHJ5H89;
+				DEVELOPMENT_TEAM = PN83KX5U85;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -281,6 +366,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zegocloud.aiagentdemo;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "AIAgentDemo/AIAgentDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
